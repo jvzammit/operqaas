@@ -1,0 +1,11 @@
+# required by code standards or local development
+black==22.6.0
+coverage==6.4.4
+django-extensions==3.2.0
+factory-boy==3.2.1
+flake8==5.0.4
+flake8-variables-names==0.0.5
+ipython==8.4.0
+ipdb==0.13.9
+isort==5.10.1
+pre-commit==2.20.0
