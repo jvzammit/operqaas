@@ -5,6 +5,8 @@ services:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     container_name: qaas_web
+    environment:
+      - DJANGO_SECRET_KEY
     volumes:
       - .:/code
     ports:
