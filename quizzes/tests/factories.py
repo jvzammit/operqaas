@@ -20,8 +20,23 @@ class UserFactory(factory.django.DjangoModelFactory):
         return manager.create_user(*args, **kwargs)
 
 
+class OwnerFactory(factory.django.DjangoModelFactory):
+    user = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = models.Owner
+
+
+class ParticipantFactory(factory.django.DjangoModelFactory):
+    user = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = models.Participant
+
+
 class QuizFactory(factory.django.DjangoModelFactory):
-    owner = factory.SubFactory(UserFactory)
+    name = factory.Sequence(lambda n: "Quiz %d" % n)
+    owner = factory.SubFactory(OwnerFactory)
 
     class Meta:
         model = models.Quiz
@@ -42,8 +57,8 @@ class QuizQuestionAnswerFactory(factory.django.DjangoModelFactory):
 
 
 class QuizSubmissionFactory(factory.django.DjangoModelFactory):
-    sender = factory.SubFactory(UserFactory)
-    recipient = factory.SubFactory(UserFactory)
+    owner = factory.SubFactory(OwnerFactory)
+    participant = factory.SubFactory(ParticipantFactory)
 
     class Meta:
         model = models.QuizSubmission
