@@ -57,7 +57,6 @@ class QuizQuestionAnswerFactory(factory.django.DjangoModelFactory):
 
 
 class QuizSubmissionFactory(factory.django.DjangoModelFactory):
-    owner = factory.SubFactory(OwnerFactory)
     participant = factory.SubFactory(ParticipantFactory)
 
     class Meta:

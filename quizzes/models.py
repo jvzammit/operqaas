@@ -74,7 +74,6 @@ class QuizQuestionAnswer(TimeStampedModel):
 
 
 class QuizSubmission(TimeStampedModel):
-    owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)

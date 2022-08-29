@@ -94,7 +94,6 @@ class QuizInviteAPIView(views.APIView):
         participant = Participant.objects.create(user=user)
         submission = QuizSubmission.objects.create(
             quiz=quiz,
-            owner=self.request.user.owner,
             participant=participant,
         )
         send_mail(
@@ -116,7 +115,7 @@ class QuizUserAnswerCreateAPIView(generics.CreateAPIView):
 class ParticipantSubmissionFilter(filters.FilterSet):
     quiz_name = filters.CharFilter(field_name="quiz__name", lookup_expr="iexact")
     owner_email = filters.CharFilter(
-        field_name="owner__user__email", lookup_expr="iexact"
+        field_name="quiz__owner__user__email", lookup_expr="iexact"
     )
 
     class Meta:
@@ -129,7 +128,7 @@ class ParticipantSubmissionsListAPIView(generics.ListAPIView):
     serializer_class = QuizSubmissionSerializer
     filter_backends = [SearchFilter, filters.DjangoFilterBackend]
     filterset_class = ParticipantSubmissionFilter
-    search_fields = ["quiz__name", "owner__user__email"]
+    search_fields = ["quiz__name", "quiz__owner__user__email"]
 
     def get_queryset(self):
         return QuizSubmission.objects.filter(
