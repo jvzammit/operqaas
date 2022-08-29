@@ -82,6 +82,14 @@ class QuizSubmission(TimeStampedModel):
 
     objects = QuizSubmissionManager()
 
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=["participant", "quiz"],
+                name="one_submission_per_participant_per_quiz",
+            )
+        ]
+
 
 class QuizUserAnswer(TimeStampedModel):
     submission = models.ForeignKey(
