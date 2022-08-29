@@ -234,9 +234,7 @@ class IntegrationTest(APITestCase):
         self.assertEqual(response.data[0]["id"], submission2.id)
 
         # Add submission for another quiz
-        submission3 = QuizSubmissionFactory(
-            quiz=quiz2, owner=owner2, participant=jane_doe
-        )
+        submission3 = QuizSubmissionFactory(quiz=quiz2, participant=jane_doe)
         url = f"/api/participant/{jane_doe.id}/submissions/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
