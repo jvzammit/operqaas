@@ -11,8 +11,16 @@ from quizzes.managers import QuizSubmissionManager
 User = settings.AUTH_USER_MODEL
 
 
+class Owner(TimeStampedModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
+class Participant(TimeStampedModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
 class Quiz(TimeStampedModel):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
 
     class Meta:
@@ -21,9 +29,6 @@ class Quiz(TimeStampedModel):
 
     def __str__(self):
         return self.name
-
-    def get_progress(self):
-        return self.submission_set.objects.filter()
 
 
 class QuizQuestion(TimeStampedModel):
@@ -69,17 +74,11 @@ class QuizQuestionAnswer(TimeStampedModel):
 
 
 class QuizSubmission(TimeStampedModel):
-    sender = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="invites_sent_set"
-    )
-    recipient = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="invites_received_set"
-    )
-    quiz = models.ForeignKey(
-        Quiz, on_delete=models.CASCADE, related_name="submission_set"
-    )
+    owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
-    invite_accepted_on = models.DateTimeField(blank=True, null=True)
+    accepted_on = models.DateTimeField(blank=True, null=True)
 
     objects = QuizSubmissionManager()
 
